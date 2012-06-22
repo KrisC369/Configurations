@@ -1,6 +1,6 @@
 --
 -- xmonad config based on the template for xmonad-0.9
--- author: Kristof Coninx 
+-- author: Kristof Coninx <kristofconinx369 AT gmail DOT com> 
 -- device: Ecl9
 --
 -- A template showing all available configuration hooks,
@@ -23,6 +23,8 @@ import System.Exit
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops
+import XMonad.Layout.NoBorders
+import XMonad.Layout.ResizableTile
 import XMonad.Util.Run
 import System.IO
 import XMonad.Config.Azerty 
@@ -82,7 +84,7 @@ myModMask       = mod4Mask
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
 --myWorkspaces :: [WorkspaceID]
-myWorkspaces = ["web","comm","ssh"] ++ map show [4..9]
+myWorkspaces = ["1-web1","2-web2","3-net","4-msg","5-conn1","6-conn2","7-work1","8-work2", "9-Misc" ]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
@@ -221,7 +223,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = tiled ||| Mirror tiled ||| Full
+myLayoutHook = avoidStruts $ smartBorders tiled ||| smartBorders (Mirror tiled) ||| smartBorders Full
   where
     -- default tiling algorithm partitions the screen into two panes
     tiled   = Tall nmaster delta ratio
@@ -282,13 +284,12 @@ myEventHook = mempty
 -- It will add EWMH logHook actions to your custom log hook by
 -- combining it with ewmhDesktopsLogHook.
 --
-myLogHook = return () 
--- = dynamicLogWithPP xmobarPP
---    { 
---        ppOutput = hPutStrLn des
---       ,ppTitle = xmobarColor "Blue" "" . shorten 50
---        ,ppLayout = const "" -- to disable the layout info on xmobar
---    }
+myLogHook des = dynamicLogWithPP xmobarPP
+    { 
+        ppOutput = hPutStrLn des
+       ,ppTitle = xmobarColor "Blue" "" . shorten 50
+        ,ppLayout = const "" -- to disable the layout info on xmobar
+    }
  
 ------------------------------------------------------------------------
 -- Startup hook
@@ -318,9 +319,9 @@ myStartupHook = return ()
 --
 -- No need to modify this.
 --
-main = xmonad =<< dzen myConfig
-
-myConfig = defaultConfig{
+main = do 
+xmproc <- spawnPipe "/usr/bin/xmobar ~/.xmonad/.xmobarrc"
+xmonad $ defaultConfig{
         -- simple stuff
         -- Use azerty keyboard layout
         keys               = \c -> azertyKeys c `M.union` keys defaultConfig c,
@@ -339,9 +340,9 @@ myConfig = defaultConfig{
         -- mouseBindings      = myMouseBindings,
  
       -- hooks, layouts
-        layoutHook         = myLayout,
+        layoutHook         = myLayoutHook ,
         manageHook         = myManageHook,
         handleEventHook    = myEventHook,
-        logHook            = myLogHook, --xmproc,
+        logHook            = myLogHook xmproc,
         startupHook        = myStartupHook
  } 

@@ -1,0 +1,19 @@
+Config { font = "-*-fixed-*-*-*-*-13-*-*-*-*-*-*-*"
+       , bgColor = "black"
+       , fgColor = "grey"
+       , position = Static { xpos = 0 , ypos = 0, width = 3840, height = 15 }
+       , lowerOnStart = True
+       , commands = [ Run Weather "EBBL" ["-t","<station>: <tempC>C","-L","18","-H","25","--normal","green","--high","red","--low","lightblue"] 36000 
+                    , Run Weather "EBBR" ["-t","<station>: <tempC>C","-L","18","-H","25","--normal","green","--high","red","--low","lightblue"] 36000 
+                    , Run Network "eth0" ["-L","0","-H","32","--normal","green","--high","red"] 5
+                    , Run Network "eth1" ["-L","0","-H","32","--normal","green","--high","red"] 5
+                    , Run Cpu ["-t", "Cpu: <total> Nice: <nice> Sys: <system>", "-L","10","-H","50","--normal","green","--high","red"] 5
+                    , Run Memory ["-t","FMem: <free>"] 5
+                    , Run Swap ["-t","USwap: <used>"] 5
+                    , Run Date "%Y-%m-%d %H:%M:%S" "date" 10
+                    , Run StdinReader
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = " %StdinReader% | %cpu% | %memory% %swap% | %eth0% - %eth1% }{ <fc=#ee9a00>%date%</fc>| %EBBL% | %EBBR% | %uname%"
+       }
