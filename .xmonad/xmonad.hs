@@ -27,7 +27,6 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.ResizableTile
 import XMonad.Util.Run
 import System.IO
-import XMonad.Config.Azerty 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
  
@@ -167,7 +166,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     ]
     ++
  
-    --
+    -- 
+    -- Original:
     -- mod-[1..9], Switch to workspace N
     --
     -- mod-[1..9], Switch to workspace N
@@ -177,7 +177,26 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     ++
- 
+   
+    --
+    -- Update the IncMasterN keymapping for belgian azerty to 
+    -- semicolon
+    --
+    [((modm, xK_semicolon), sendMessage (IncMasterN (-1)))]
+    ++
+	
+    -- 
+    -- Update for Belgian azerty keyboards:
+    -- mod-[1..9], Switch to workspace N
+    --
+    -- mod-[1..9], Switch to workspace N
+    -- mod-shift-[1..9], Move client to workspace N
+    -- @Override ;)
+    --   
+   [((m .|. modm, k), windows $ f i)
+        | (i, k) <- zip (workspaces conf) [0x26,0xe9,0x22,0x27,0x28,0xa7,0xe8,0x21,0xe7,0xe0]
+	, (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+    ++
     --
     -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
     -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
@@ -186,7 +205,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
  
- 
+
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
 --
@@ -323,8 +342,9 @@ main = do
 xmproc <- spawnPipe "/usr/bin/xmobar ~/.xmonad/.xmobarrc"
 xmonad $ defaultConfig{
         -- simple stuff
-        -- Use azerty keyboard layout
-        keys               = \c -> azertyKeys c `M.union` keys defaultConfig c,
+        -- Use azerty keyboard layout with belgian keycodes
+	-- specified in myKeys var.
+        keys               = \c -> myKeys c `M.union` keys defaultConfig c,
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
         borderWidth        = myBorderWidth,
@@ -346,3 +366,8 @@ xmonad $ defaultConfig{
         logHook            = myLogHook xmproc,
         startupHook        = myStartupHook
  } 
+
+-- Own patched version of azertyKeys function.
+-- AzertyConfig is for french azerty, doesn't work on belgian azerty keyboards
+-- for the 6 and 8 keys (workspace switching).
+
