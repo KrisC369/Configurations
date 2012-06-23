@@ -9,6 +9,8 @@ Most of the content is of my own making, but I have looked around on the interne
 
 If you find snippets of code in one of the files here, feel free to let me know and I will credit you for it.
 
+The gitrepository is located relative to the homedir '~'.
+
 At this moment, I have configurations for: 
     
     - Vim (.vimrc and .vim folder)
@@ -19,5 +21,9 @@ At this moment, I have configurations for:
     - Bash (.bashrc_{local,remote1})
         I use different .bashrc scripts for different hosts to give them a bit of a different color scheme.
         The files are annotated with local or remote to differentiate on location of the hosts that use them.
-
+    
+    - XMonad (.xmonad folder) 
+        Configuration files for xmonad and xmobar. For xmonad, there is a haskell config file xmonad.hs
+        For xmobar there is a dot file .xmobarrc to configure it.
+        
 
