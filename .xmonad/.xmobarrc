@@ -5,15 +5,16 @@ Config { font = "-*-fixed-*-*-*-*-13-*-*-*-*-*-*-*"
        , lowerOnStart = True
        , commands = [ Run Weather "EBBL" ["-t","<station>: <tempC>C","-L","18","-H","25","--normal","green","--high","red","--low","lightblue"] 36000 
                     , Run Weather "EBBR" ["-t","<station>: <tempC>C","-L","18","-H","25","--normal","green","--high","red","--low","lightblue"] 36000 
-                    , Run Network "eth0" ["-L","0","-H","32","--normal","green","--high","red"] 5
-                    , Run Network "eth1" ["-L","0","-H","32","--normal","green","--high","red"] 5
-                    , Run Cpu ["-t", "Cpu: <total> Nice: <nice> Sys: <system>", "-L","10","-H","50","--normal","green","--high","red"] 5
-                    , Run Memory ["-t","FMem: <free>"] 5
-                    , Run Swap ["-t","USwap: <used>"] 5
+                    , Run Network "eth0" ["-L","0","-H","750","--normal","green","--high","red"] 5
+                    , Run Network "eth1" ["-L","0","-H","750","--normal","green","--high","red"] 5
+                    , Run MultiCpu ["-t", "Cpu0: <total0> Cpu1: <total1> Cpu2: <total2> Cpu3: <total3> Cpu4: <total4> Cpu5: <total5> Cpu6: <total6> Cpu7: <total7> NiceTotal: <nice> SysTotal: <system>", "-L","25","-H","75","--normal","yellow","--high","red","--low","green"] 5
+                    , Run CoreTemp ["-t", "CoreTemp: <core0>|<core1>|<core2>|<core3>C", "-L", "45", "-H", "65", "-l", "lightblue", "-n", "gray90", "-h", "red"] 5
+                    , Run Memory ["-t","Used: <used>M"] 5
+                    , Run Swap ["-t","USwap: <used>M"] 5
                     , Run Date "%Y-%m-%d %H:%M:%S" "date" 10
                     , Run StdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = " %StdinReader% | %cpu% | %memory% %swap% | %eth0% - %eth1% }{ <fc=#ee9a00>%date%</fc>| %EBBL% | %EBBR% | %uname%"
+       , template = " %StdinReader% | %multicpu% | %coretemp% | %memory% %swap% | %eth0% - %eth1% }{ <fc=#ee9a00>%date%</fc>| %EBBL% | %EBBR% | %uname%"
        }
