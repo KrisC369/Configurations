@@ -20,13 +20,22 @@
 import XMonad
 import Data.Monoid
 import System.Exit
+import System.IO
+
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.EwmhDesktops
+
 import XMonad.Layout.NoBorders
 import XMonad.Layout.ResizableTile
+import XMonad.Layout.LayoutHints
+import XMonad.Layout.Tabbed
+import XMonad.Layout.ToggleLayouts
+import XMonad.Layout.WindowArranger
+import XMonad.Layout.Mosaic
+
 import XMonad.Util.Run
-import System.IO
+
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
  
@@ -83,7 +92,7 @@ myModMask       = mod4Mask
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
 --myWorkspaces :: [WorkspaceID]
-myWorkspaces = ["1-web1","2-web2","3-net","4-msg","5-conn1","6-conn2","7-work1","8-work2", "9-Misc" ]
+myWorkspaces = ["1-web1","2-web2","3-net","4-msg","5-conn1","6-conn2","7-work1","8-work2", "9-media" ]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
@@ -242,10 +251,11 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayoutHook = avoidStruts $ smartBorders tiled ||| smartBorders (Mirror tiled) ||| smartBorders Full
+myLayoutHook = avoidStruts $ toggleLayouts (noBorders Full)
+    (smartBorders (tiled ||| Mirror tiled ||| Full ||| mosaic 2 [3,2] ||| layoutHints (tabbed shrinkText defaultTheme)))
   where
     -- default tiling algorithm partitions the screen into two panes
-    tiled   = Tall nmaster delta ratio
+    tiled   = layoutHints $ ResizableTall nmaster delta ratio []
  
     -- The default number of windows in the master pane
     nmaster = 1
@@ -275,7 +285,23 @@ myManageHook = composeAll
     [ className =? "MPlayer"        --> doFloat
     , className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore ]
+    , resource  =? "kdesktop"       --> doIgnore 
+    -- Template
+    -- , className =? "" --> doShift ""
+    --, className =? "Firefox" --> doShift "1-web1"  
+    , className =? "Xchat" --> doShift "4-msg"  
+    , className =? "Pidgin" --> doShift "4-msg"  
+    --, className =? "Shotwell" --> doShift "5:graphic"  
+    --, className =? "Gimp" --> doShift "5:graphic"  
+    , className =? "Vlc" --> doShift "9-media"  
+    --, className =? "Minitube" --> doShift "7:media"  
+    , className =? "xbmc.bin" --> doShift "9-media"
+    , className =? "Empathy" --> doShift "4-msg"
+    , className =? "Skype" --> doShift "4-msg"
+    , className =? "Thunderbird" --> doShift "4-msg"
+    , className =? "Rhythmbox" --> doShift "9-media"
+    , className =? "Wireshark" --> doShift "3-net"
+    ]
  
 ------------------------------------------------------------------------
 -- Event handling
@@ -306,7 +332,7 @@ myEventHook = mempty
 myLogHook des = dynamicLogWithPP xmobarPP
     { 
         ppOutput = hPutStrLn des
-       ,ppTitle = xmobarColor "Blue" "" . shorten 50
+       ,ppTitle = xmobarColor "Gray" "" . shorten 60
         ,ppLayout = const "" -- to disable the layout info on xmobar
     }
  
@@ -366,8 +392,4 @@ xmonad $ defaultConfig{
         logHook            = myLogHook xmproc,
         startupHook        = myStartupHook
  } 
-
--- Own patched version of azertyKeys function.
--- AzertyConfig is for french azerty, doesn't work on belgian azerty keyboards
--- for the 6 and 8 keys (workspace switching).
 
