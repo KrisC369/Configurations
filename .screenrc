@@ -1,3 +1,6 @@
+#ctrl+k as mode button.
+escape ^Kk
+
 #my screen configuration.
 bindkey "^[Od" prev  # change window with ctrl-left
 bindkey "^[Oc" next  # change window with ctrl-right
@@ -11,11 +14,23 @@ vbell off
 # keep scrollback n lines
 defscrollback 1000
 
-# Doesn't fix scrollback problem on xterm because if you scroll back
-# all you see is the other terminals history.
-# termcapinfo xterm|xterms|xs|rxvt ti@:te@
+#commands for highlighting.
+bind -c selectHighs 0 select 10  
+bind -c selectHighs 1 select 11 
+bind -c selectHighs 2 select 12
+bind -c selectHighs 3 select 13
+bind -c selectHighs 4 select 14
+bind -c selectHighs 5 select 15
 
-#THIS IS THE PRETTY BIT
+#bind hyphen to command-class selectHighs
+bind - command -c selectHighs
+
+#screen -t work 1 
+#screen -t tunnel.broker 2 ssh -XC -L60000:genk.cs.kotnet.kuleuven.be:22 s0199831@st.cs.kuleuven.be
+#screen -t tunnel.genk 3 sleep 2 && ssh -XC s0199831@localhost -p60000
+#screen -t BMon 8 bmon
+#screen -t htop 9 htop
+
 #change the hardstatus settings to give an window list at the bottom of the                                                                        
 ##screen, with the time and date and with the current window highlighted                                                                            
 hardstatus             alwayslastline                                                                                                                          
