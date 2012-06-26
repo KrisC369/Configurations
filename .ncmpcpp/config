@@ -1,0 +1,138 @@
+####################################################
+#
+##### connection settings #####
+#
+## set it in order to make tag editor and renaming files work properly
+#
+mpd_host = "localhost"
+#
+mpd_port = "6600"
+#
+mpd_music_dir = "~/Music/"
+
+# I had to set this to avoid a bug which slows down viewing artist's list
+#mpd_communication_mode = "polling" (polling/notifications)
+
+##### music visualizer #####
+##
+## Note: In order to make music visualizer work you'll
+## need to use mpd fifo output, whose format parameter
+## has to be set to 44100:16:1. Example configuration:
+## (it has to be put into mpd.conf)
+## This is the simplest way to configure it. ncmpcpp has to
+## be compiled with support for it.
+visualizer_fifo_path = "/tmp/mpd.fifo"
+visualizer_output_name = "my_fifo"
+#visualizer_sync_interval = "1"
+
+## Note: To enable spectrum frequency visualization
+## you need to compile ncmpcpp with fftw3 support.
+##
+#
+visualizer_type = "spectrum" (spectrum/wave)
+#visualizer_type = "wave"
+##### song format #####
+
+song_list_format = "{%a - }{%t}|{$8%f$9}$R{$8(%l)$9}"
+
+song_library_format = "{$4%n - }{%t}|{%f$9}"
+
+media_library_album_format = "{%b}|$D"
+
+## Note: Below variables are for alternative version of user's interface.
+## Their syntax supports all tags and colors listed above plus some extra
+## markers used for text attributes. They are followed by character '$'.
+## After that you can put:
+
+alternative_header_first_line_format = "$b$8$aqqu$/a {%t}|{%f} $atqq$/a$9$/b"
+#
+alternative_header_second_line_format = "{{$5$b%a$/b}{ - $b%b}{ (%y)}}|{%D$9}"
+
+## Note: Below variables also supports
+## text attributes listed above.
+
+now_playing_prefix = "$b"
+
+now_playing_suffix = "$/b"
+
+selected_item_prefix = "$b"
+
+selected_item_suffix = "$/b"
+
+##### columns settings #####
+
+song_columns_list_format = "(25)[blue]{a} (25)[white]{b} (40)[white]{t} (5)[yellow]{l}"
+
+##### various settings #####
+
+playlist_display_mode = "columns" (classic/columns)
+
+browser_display_mode = "columns" (classic/columns)
+
+incremental_seeking = "yes"
+
+user_interface = "alternative" (classic/alternative)
+
+header_visibility = "yes"
+
+statusbar_visibility = "yes"
+
+header_text_scrolling = "yes"
+
+## How shall key_screen_switcher work?
+
+screen_switcher_mode = "sequence: 2 -> 5"
+
+## Note: You can define startup screen for ncmpcpp
+## by choosing screen number from the list above.
+##
+startup_screen = "5"
+
+clock_display_seconds = "yes"
+
+display_bitrate = "yes"
+
+empty_tag_marker = "----"
+
+enable_window_title = "yes"
+
+##### lyrics support #####
+##
+## supported lyrics databases:
+##
+## - 1 - lyricsplugin.com
+##
+#
+lyrics_database = "1"
+#
+external_editor = "vim"
+
+##### colors definitions #####
+
+colors_enabled = "yes"
+
+empty_tag_color = "red"
+
+header_window_color = "cyan"
+
+volume_color = "yellow"
+
+main_window_color = "white"
+
+color1 = "blue"
+
+color2 = "white"
+
+main_window_highlight_color = "blue"
+
+progressbar_color = "blue"
+
+statusbar_color = "yellow"
+
+alternative_ui_separator_color = "blue"
+
+active_column_color = "white"
+
+window_border_color = "green"
+
+active_window_border = "white"
