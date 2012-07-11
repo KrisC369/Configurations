@@ -26,6 +26,7 @@ At this moment, I have configurations for:
         Configuration files for xmonad and xmobar. For xmonad, there is a haskell config file xmonad.hs
         For xmobar there is a dot file .xmobarrc to configure it.
     - MPD 
-        Music Player Daemon configuration files.
+        Music Player Daemon configuration files. 
+
         
 
