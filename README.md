@@ -6,6 +6,7 @@ A repository for applying version control to a host of different configuration f
 This repository serves as a central storage of my different configurations for vim, bash,... 
 It's easy to manage the configurations on different hosts when using git. 
 Most of the content is of my own making, but I have looked around on the internet for interesting features and configurations.
+Also some useful scripts have been added. Might come in handy in the future.
 
 If you find snippets of code in one of the files here, feel free to let me know and I will credit you for it.
 
